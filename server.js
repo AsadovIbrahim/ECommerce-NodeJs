@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const rateLimiter = require('./Middleware/rateLimiter');
+const {connectDb}=require('./Utils/database');
 const userRoutes = require('./Routes/userRoutes');
 const productRoutes = require('./Routes/productRoutes');
 const basketRoutes = require('./Routes/basketRoutes');
@@ -13,6 +14,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+connectDb();
+
 app.use(rateLimiter);
 
 app.use('/api/users', userRoutes);
