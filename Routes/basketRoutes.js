@@ -26,6 +26,18 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const basket = await Basket.findById(id).populate('products.productId');
+    if (!basket) {
+      return res.status(404).json({ message: "Basket not found" });
+    }
+    res.json(basket);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching basket by ID", error: error.message });
+  }
+});
 
 router.put('/:id', authMiddleware, async (req, res) => {
   const basket = await Basket.findByIdAndUpdate(req.params.id, req.body, { new: true });
